@@ -1,0 +1,190 @@
+# 📍 Google Maps Business Scraper
+
+Extensão para Chrome que coleta dados de empresas listadas no Google Maps e exporta em `.xls`.
+Tem também um **dashboard web opcional** — a extensão coleta (só ela tem a permissão
+necessária pra ler o Google Maps), e o site guarda o histórico de todas as coletas,
+com os mesmos filtros, acessível de qualquer navegador/dispositivo depois de logar.
+
+A UI do popup é feita em **React + CSS Modules** (build via Vite), assim como o dashboard
+web (`web/`). O scraping em si (`content.js`, injetado no Google Maps, e `background.js`,
+o service worker que abre cada empresa numa aba oculta) continua em JavaScript puro —
+são scripts injetados pelo Chrome, não faz sentido usar React neles.
+
+---
+
+## 📦 Estrutura de Arquivos
+
+```
+google-maps-scraper/
+├── manifest.json          # Configuração da extensão (Manifest V3)
+├── content.js              # Script de scraping (roda dentro do Maps)
+├── background.js           # Service Worker (MV3) — extrai dados de cada empresa
+├── src/popup/               # Código-fonte do popup (React)
+│   ├── popup.html
+│   ├── main.jsx
+│   ├── App.jsx
+│   ├── components/          # Header, filtros, lista de resultados, botões, AuthBar...
+│   ├── hooks/                # useScraper (coleta), useAuth + useCloudSync (Supabase)
+│   ├── lib/                  # chromeApi, filtros, exportação .xls, supabase, cloudSync
+│   └── styles/global.css    # Design tokens (cores, radius, fontes)
+├── dist/                    # Build gerado pelo Vite (dist/popup.html é o popup real)
+├── web/                     # Dashboard web (React + Vite, deploy separado — ver DEPLOY.md)
+│   └── src/                  # Login, Dashboard, lista de coletas, tabela de leads
+├── supabase/schema.sql      # Schema do banco (tabelas + RLS) — rode uma vez no Supabase
+├── DEPLOY.md                # Passo a passo pra ligar extensão + dashboard + Supabase
+├── legacy/                  # Versão antiga (popup.html/js/css em HTML puro), mantida de referência
+├── icons/
+└── README.md
+```
+
+---
+
+## 🛠️ Build do popup (necessário antes de carregar a extensão)
+
+```bash
+npm install       # instala React + Vite (uma vez)
+npm run build     # gera dist/popup.html — rode de novo após qualquer alteração em src/popup
+npm run dev       # opcional: preview do popup isolado no navegador, fora da extensão
+```
+
+O `manifest.json` aponta `default_popup` para `dist/popup.html`, então o build
+precisa existir na pasta antes de carregar a extensão no Chrome.
+
+---
+
+## 🚀 Instalação no Chrome (Modo Desenvolvedor)
+
+1. Rode `npm install && npm run build` (veja acima)
+2. Abra o Chrome e acesse: `chrome://extensions/`
+3. Ative o **"Modo do desenvolvedor"** (canto superior direito)
+4. Clique em **"Carregar sem compactação"**
+5. Selecione a pasta `google-maps-scraper`
+6. A extensão aparecerá na barra de ferramentas do Chrome ✅
+
+---
+
+## 🎯 Como Usar
+
+### Método 1 — Usar busca atual do Maps
+1. Abra o [Google Maps](https://www.google.com/maps)
+2. Faça uma busca (ex: *"pizzarias em Curitiba"*)
+3. Aguarde os resultados aparecerem na barra lateral
+4. Clique no ícone 📍 da extensão na barra do Chrome
+5. Configure o **limite de empresas** e o **delay**
+6. Clique em **"Iniciar Coleta"**
+7. Aguarde a barra de progresso completar
+8. (Opcional) Use os filtros para restringir a lista
+9. Clique em **"Baixar Excel"**
+
+---
+
+## 📊 Dados Coletados
+
+| Campo     | Descrição                        |
+|-----------|----------------------------------|
+| Nome      | Nome da empresa                  |
+| Website   | URL do site oficial              |
+| Agendamento | Link de agendamento/bio (Calendly, Linktree, etc.) |
+| Cardápio  | Link de cardápio/delivery (iFood, menu do site...) |
+| Redes Sociais | Instagram, Facebook, WhatsApp, etc.          |
+| Telefone  | Número de telefone               |
+| Email     | E-mail (se disponível no Maps)   |
+| Endereço  | Endereço completo                |
+
+> **Nota:** Campos não disponíveis são preenchidos com `"Sem info"`.
+
+---
+
+## 🔎 Filtros no popup
+
+Depois que a coleta termina, o painel de resultados tem uma barra de filtros:
+
+- **Busca por nome** — digite parte do nome da empresa.
+- **Chips de filtro** — "Sem website", "Sem telefone", "Sem email", "Sem redes sociais".
+  Ative um ou mais para ver só as empresas que **não têm** aquele dado (útil pra
+  prospecção: ex. leads sem site pra oferecer criação de site).
+
+Os filtros ativos também definem o que é exportado: o botão **"Baixar Excel"** mostra
+a contagem do que será baixado e respeita os filtros aplicados — dá pra exportar só
+o subconjunto filtrado sem precisar limpar a planilha depois.
+
+---
+
+## ☁️ Dashboard web (opcional)
+
+A extensão sozinha continua funcionando 100% local, sem depender de nada disso.
+Mas se você configurar um projeto Supabase (veja **[DEPLOY.md](DEPLOY.md)**), o popup
+ganha uma conta (email/senha) e cada coleta finalizada é enviada automaticamente pro
+banco. O dashboard web (`web/`, publicável na Vercel) mostra:
+
+- Histórico de **todas** as coletas já feitas, não só a última.
+- Mesmos filtros do popup (busca por nome + "sem website/telefone/email/redes"),
+  aplicáveis numa coleta específica ou em todas juntas.
+- Tabela com todos os campos coletados (inclusive Agendamento/Cardápio/Email, que
+  não vão na planilha rápida do popup) e exportação `.xls` própria.
+- Excluir coletas antigas.
+
+Acesso de qualquer navegador/dispositivo, protegido por Row Level Security no banco
+(cada conta só vê os próprios dados). Passo a passo completo de configuração em
+[DEPLOY.md](DEPLOY.md).
+
+---
+
+## ⚙️ Configurações
+
+| Configuração       | Padrão | Descrição                                  |
+|---------------------|--------|--------------------------------------------|
+| Limite de empresas | 20     | Máximo de 100 empresas por sessão (slider) |
+| Delay entre coletas | 2000ms | Fixo no código (`config.delay` em `useScraper.js`), evita bater forte no Google |
+
+> ⚠️ Delays menores = coleta mais rápida, mas maior risco de detecção pelo Google.
+
+---
+
+## 📁 Formato do arquivo exportado (.xls)
+
+Planilha HTML compatível com Excel, com colunas Nome, Website, Redes Sociais, Telefone
+e Endereço (Agendamento, Cardápio e Email são coletados e usados nos filtros do popup,
+mas não entram na planilha exportada).
+
+- **Codificação:** UTF-8 com BOM
+- Células sem dado aparecem como `Sem info`
+- Links (website, redes) viram hyperlinks clicáveis na planilha
+
+---
+
+## 🔧 Solução de Problemas
+
+### "Não foi possível conectar ao Google Maps"
+- Recarregue a página do Maps (F5) e tente novamente.
+
+### "Nenhuma lista de resultados encontrada"
+- Certifique-se de que há resultados visíveis na barra lateral do Maps antes de iniciar.
+
+### A coleta para sozinha
+- O Google pode ter detectado atividade automatizada. Aumente o delay para 2000ms+.
+
+### Dados faltando (muitos "Sem info")
+- O Google atualiza frequentemente o DOM do Maps. Os seletores CSS no `content.js` podem precisar de atualização.
+
+---
+
+## ⚖️ Aviso Legal
+
+> Esta extensão acessa dados do Google Maps via DOM scraping. O uso pode violar os  
+> [Termos de Uso do Google Maps](https://maps.google.com/help/terms_maps/).  
+>
+> **Use apenas para fins legítimos e pessoais.**  
+> Não use para coleta em massa, revenda de dados ou atividades comerciais sem autorização.  
+> O autor não se responsabiliza pelo uso indevido desta ferramenta.
+
+---
+
+## 🛠️ Tecnologias
+
+- React 18 + CSS Modules (popup e dashboard web), build com Vite
+- JavaScript ES6+ puro (`content.js` / `background.js`)
+- Chrome Extensions Manifest V3
+- Chrome APIs: `tabs`, `scripting`, `storage`, `downloads`
+- Supabase (Postgres + Auth + RLS) como backend do dashboard, hospedagem na Vercel
+- Exportação `.xls` (tabela HTML) com BOM UTF-8

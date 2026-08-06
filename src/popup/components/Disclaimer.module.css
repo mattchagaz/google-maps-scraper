@@ -1,0 +1,18 @@
+.box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 10.5px;
+  color: var(--text-faint);
+  line-height: 1.55;
+}
+
+.box a {
+  color: var(--text-dim);
+  text-decoration: none;
+}
+
+.box a:hover {
+  text-decoration: underline;
+}
