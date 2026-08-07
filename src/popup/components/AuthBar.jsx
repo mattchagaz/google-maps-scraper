@@ -34,8 +34,8 @@ export default function AuthBar({ user, loading, authError, signIn, signUp, sign
         <SyncStatus status={syncStatus} />
         <div className={styles.actions}>
           {DASHBOARD_URL && (
-            <button type="button" className={styles.link} onClick={openDashboard}>
-              Dashboard ↗
+            <button type="button" className={styles.dashboardBtn} onClick={openDashboard}>
+              📊 Dashboard ↗
             </button>
           )}
           <button type="button" className={styles.link} onClick={signOut}>

@@ -32,5 +32,27 @@ export function useCollections(user) {
     setCollections((prev) => prev.filter((c) => c.id !== id));
   }, []);
 
-  return { collections, loading, error, refresh, remove };
+  const rename = useCallback(async (id, label) => {
+    const clean = label.trim();
+    if (!clean) return;
+    const { error: err } = await supabase.from('collections').update({ label: clean }).eq('id', id);
+    if (err) throw err;
+    setCollections((prev) => prev.map((c) => (c.id === id ? { ...c, label: clean } : c)));
+  }, []);
+
+  // Pulls just the latest totals — used after a lead is deleted, since
+  // the DB trigger updates `total` server-side but this list is local.
+  const refreshTotals = useCallback(async () => {
+    if (!user) return;
+    const { data } = await supabase.from('collections').select('id, total');
+    if (!data) return;
+    setCollections((prev) =>
+      prev.map((c) => {
+        const match = data.find((d) => d.id === c.id);
+        return match ? { ...c, total: match.total } : c;
+      })
+    );
+  }, [user]);
+
+  return { collections, loading, error, refresh, remove, rename, refreshTotals };
 }

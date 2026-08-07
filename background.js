@@ -34,8 +34,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 // ════════════════════════════════════════════════════════════
 async function extractPlace(url, delay) {
   const empty = {
-    telefone: 'Sem info', website: 'Sem info',
-    endereco: 'Sem info', email:   'Sem info',
+    telefone: 'Sem info', website:  'Sem info',
+    endereco: 'Sem info', email:    'Sem info',
+    whatsapp: 'Sem info', categoria: 'Sem info',
+    avaliacao: 'Sem info', num_avaliacoes: 'Sem info',
   };
 
   let tab;
@@ -137,9 +139,43 @@ function extractFromPage() {
     agendamento: 'Sem info',
     cardapio:    'Sem info',
     redes:       'Sem info',
+    whatsapp:    'Sem info',
     endereco:    'Sem info',
     email:       'Sem info',
+    categoria:   'Sem info',
+    avaliacao:      'Sem info',
+    num_avaliacoes: 'Sem info',
   };
+
+  // Categoria do negócio (ex: "Estúdio de tatuagem") — o Maps mostra logo
+  // abaixo do nome, como um botão/link. Seletor pode quebrar se o Google
+  // trocar as classes (mesma ressalva de sempre pros outros campos).
+  const catEl = document.querySelector('.DkEaL, button[jsaction*="category"]');
+  if (catEl) {
+    const txt = catEl.textContent.trim();
+    if (txt) result.categoria = txt;
+  }
+
+  // Nota + nº de avaliações — bloco costuma ter classe .F7nice, com texto
+  // tipo "4,5(1.234)" ou "4,5(1,2 mil)". Regex em vez de depender só do
+  // formato exato, que o Google muda com frequência.
+  const ratingEl = document.querySelector('.F7nice');
+  if (ratingEl) {
+    const raw = (ratingEl.innerText || ratingEl.textContent || '').trim();
+    const ratingMatch = raw.match(/(\d+[.,]\d+)/);
+    const countMatch = raw.match(/\(([^)]+)\)/);
+    if (ratingMatch) result.avaliacao = ratingMatch[1].replace(',', '.');
+    if (countMatch) {
+      const c = countMatch[1].trim();
+      if (/mil/i.test(c)) {
+        const num = parseFloat(c.replace(/mil/i, '').replace(',', '.').trim());
+        if (!Number.isNaN(num)) result.num_avaliacoes = String(Math.round(num * 1000));
+      } else {
+        const digits = c.replace(/[^\d]/g, '');
+        if (digits) result.num_avaliacoes = digits;
+      }
+    }
+  }
 
   const RX_PHONE = /^\(?\+?[\d][\d\s\(\)\-\.]{6,18}[\d]$/;
   const RX_PLUS  = /^[A-Z0-9]{3,}\+[A-Z0-9]{2,}/;
@@ -160,12 +196,15 @@ function extractFromPage() {
     return host === domain || host.endsWith('.' + domain);
   }
 
+  // ── [W] WhatsApp — separado das outras redes de propósito, é o
+  // canal de contato direto mais valioso pra prospecção
+  const WHATSAPP_DOMAINS = ['wa.me', 'whatsapp.com', 'api.whatsapp.com'];
+
   // ── [E] Redes Sociais — SOMENTE plataformas conhecidas ───────
   // Verificação ESTRITA por hostname, nunca por substring da URL
   const SOCIAL_DOMAINS = [
     'instagram.com', 'instagr.am',
     'facebook.com', 'fb.com', 'fb.me',
-    'wa.me', 'whatsapp.com',
     'twitter.com', 'x.com', 't.co',      // t.co verificado por hostname
     'tiktok.com',
     'pinterest.com', 'pin.it',
@@ -272,6 +311,9 @@ function extractFromPage() {
     if (BLOCKED_HOSTS.some(d => matchDomain(d, host))) return null;
     if (href.includes('aclk') || href.includes('/maps/')) return null;
 
+    // [W] WhatsApp — checado antes das redes sociais genéricas
+    if (WHATSAPP_DOMAINS.some(d => matchDomain(d, host))) return 'whatsapp';
+
     // [E] Rede social — hostname EXATO
     if (SOCIAL_DOMAINS.some(d => matchDomain(d, host))) return 'social';
 
@@ -303,10 +345,11 @@ function extractFromPage() {
 
   // ── Distribui os links nos slots ─────────────────────────────
   for (const { url, type } of links) {
-    if (type === 'social'  && result.redes       === 'Sem info') { result.redes       = url; continue; }
-    if (type === 'booking' && result.agendamento === 'Sem info') { result.agendamento = url; continue; }
-    if (type === 'menu'    && result.cardapio    === 'Sem info') { result.cardapio    = url; continue; }
-    if (type === 'website' && result.website     === 'Sem info') { result.website     = url; continue; }
+    if (type === 'whatsapp' && result.whatsapp    === 'Sem info') { result.whatsapp    = url; continue; }
+    if (type === 'social'   && result.redes       === 'Sem info') { result.redes       = url; continue; }
+    if (type === 'booking'  && result.agendamento === 'Sem info') { result.agendamento = url; continue; }
+    if (type === 'menu'     && result.cardapio    === 'Sem info') { result.cardapio    = url; continue; }
+    if (type === 'website'  && result.website     === 'Sem info') { result.website     = url; continue; }
   }
 
   // ── Fallback: link "website" extra vai para Agendamento ───────

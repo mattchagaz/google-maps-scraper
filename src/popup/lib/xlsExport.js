@@ -1,9 +1,9 @@
 // Builds an Excel-compatible .xls (HTML table) file and triggers a download,
 // same format the original vanilla popup produced.
 
-const HEADERS = ['Nome', 'Website', 'Redes Sociais', 'Telefone', 'Endereço'];
-const FIELDS = ['nome', 'website', 'redes', 'telefone', 'endereco'];
-const COL_WIDTHS = [170, 140, 140, 110, 210];
+const HEADERS = ['Nome', 'Website', 'WhatsApp', 'Redes Sociais', 'Telefone', 'Endereço'];
+const FIELDS = ['nome', 'website', 'whatsapp', 'redes', 'telefone', 'endereco'];
+const COL_WIDTHS = [170, 140, 140, 140, 110, 210];
 
 function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -11,7 +11,7 @@ function esc(s) {
 
 function makeCell(val, field) {
   const isSem = !val || val === 'Sem info';
-  const isLink = ['website', 'redes'].includes(field);
+  const isLink = ['website', 'whatsapp', 'redes'].includes(field);
   const cls = isSem ? 'sem' : field === 'website' ? 'web' : field === 'telefone' ? 'tel' : isLink ? 'web' : '';
   const safe = esc(val || 'Sem info');
   const inner = !isSem && isLink ? `<a href="${safe}" style="color:#1D4ED8">${safe}</a>` : safe;

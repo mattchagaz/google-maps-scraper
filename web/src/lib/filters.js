@@ -4,6 +4,7 @@
 export const FIELD_FILTERS = [
   { key: 'website', label: 'Sem website', icon: '🌐' },
   { key: 'telefone', label: 'Sem telefone', icon: '📞' },
+  { key: 'whatsapp', label: 'Sem WhatsApp', icon: '💬' },
   { key: 'email', label: 'Sem email', icon: '✉️' },
   { key: 'redes', label: 'Sem redes sociais', icon: '📱' },
 ];
@@ -18,7 +19,8 @@ export function matchesFilters(item, activeKeys, search) {
   }
   if (search) {
     const q = search.trim().toLowerCase();
-    if (q && !item.nome?.toLowerCase().includes(q)) return false;
+    const hit = item.nome?.toLowerCase().includes(q) || item.categoria?.toLowerCase().includes(q);
+    if (q && !hit) return false;
   }
   return true;
 }

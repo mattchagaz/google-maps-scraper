@@ -16,7 +16,7 @@ import { downloadXLS } from './lib/xlsExport.js';
 import styles from './App.module.css';
 
 export default function App() {
-  const { tabReady, collectedData, isRunning, limit, setLimit, progress, error, start, stop } =
+  const { tabReady, collectedData, isRunning, limit, setLimit, progress, error, start, stop, clear } =
     useScraper();
 
   const auth = useAuth();
@@ -37,6 +37,12 @@ export default function App() {
 
   const showResults = !isRunning && collectedData.length > 0;
 
+  const handleClear = () => {
+    clear();
+    setActiveKeys([]);
+    setSearch('');
+  };
+
   return (
     <div className={styles.container}>
       <Header />
@@ -56,6 +62,8 @@ export default function App() {
           onToggleFilter={toggleFilter}
           search={search}
           onSearchChange={setSearch}
+          onClear={handleClear}
+          showDashboardHint={auth.cloudConfigured && !!auth.user}
         />
       )}
 

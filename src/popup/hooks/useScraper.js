@@ -107,5 +107,13 @@ export function useScraper() {
     setIsRunning(false);
   }, []);
 
-  return { tabReady, collectedData, isRunning, limit, setLimit, progress, error, start, stop };
+  // Clears the current results without starting a new scrape — lets the
+  // user go do another search on Maps and start fresh from an empty popup.
+  const clear = useCallback(() => {
+    setCollectedData([]);
+    setProgress(null);
+    setError(null);
+  }, []);
+
+  return { tabReady, collectedData, isRunning, limit, setLimit, progress, error, start, stop, clear };
 }

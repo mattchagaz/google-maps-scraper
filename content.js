@@ -67,9 +67,13 @@
         agendamento: extra.agendamento,
         cardapio:    extra.cardapio,
         redes:       extra.redes,
+        whatsapp:    extra.whatsapp,
         telefone:    extra.telefone,
         email:       extra.email,
         endereco:    extra.endereco,
+        categoria:   extra.categoria,
+        avaliacao:      extra.avaliacao,
+        num_avaliacoes: extra.num_avaliacoes,
       };
 
       console.log(`[MapsScraper]   tel:${data.telefone} | web:${data.website} | end:${data.endereco}`);
@@ -163,7 +167,7 @@
   // ════════════════════════════════════════════════════════════
   function askBackground(url, delay) {
     return new Promise(resolve => {
-      const empty = { telefone:'Sem info', website:'Sem info', endereco:'Sem info', email:'Sem info' };
+      const empty = { telefone:'Sem info', website:'Sem info', endereco:'Sem info', email:'Sem info', whatsapp:'Sem info', categoria:'Sem info', avaliacao:'Sem info', num_avaliacoes:'Sem info' };
       // Timeout = delay configurado + 20s de margem para a aba carregar
       const timeout = setTimeout(() => resolve(empty), delay + 20000);
 

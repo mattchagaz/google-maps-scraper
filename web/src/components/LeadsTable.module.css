@@ -45,9 +45,69 @@
   background: var(--surface-hover);
 }
 
-.table td:first-child {
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--surface-2);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s;
+  vertical-align: middle;
+}
+
+.checkbox:hover {
+  border-color: var(--accent);
+}
+
+.checkbox:checked {
+  background: var(--accent-gradient);
+  border-color: var(--accent);
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.table td.nameCell {
   color: var(--text);
   font-weight: 500;
+}
+
+.nameBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.nameBtn:hover {
+  color: var(--accent-2);
+  text-decoration: underline;
+}
+
+
+.rowSelected td {
+  background: var(--accent-soft);
 }
 
 .link {
@@ -62,6 +122,108 @@
 .empty {
   color: var(--text-faint);
   font-style: italic;
+}
+
+.ratingCount {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.phoneCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.copyBtn:hover {
+  color: var(--accent);
+}
+
+.waCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.waBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--success-soft);
+  color: var(--success);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.waBtn:hover {
+  background: rgba(52, 211, 153, 0.22);
+}
+
+.aiBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 0;
+  transition: all 0.15s;
+}
+
+.aiBtn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.aiBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.deleteBtn {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+}
+
+.table tbody tr:hover .deleteBtn {
+  opacity: 1;
+}
+
+.deleteBtn:hover {
+  color: var(--danger);
+  background: var(--danger-soft);
 }
 
 .state {

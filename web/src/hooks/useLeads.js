@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase.js';
 
 /**
@@ -33,5 +33,38 @@ export function useLeads(user, collectionId) {
     };
   }, [user, collectionId]);
 
-  return { leads, loading, error };
+  // `collections.total` is kept correct by a DB trigger — deleting here
+  // only needs to update this hook's own local list.
+  const removeLead = useCallback(async (id) => {
+    const { error: err } = await supabase.from('leads').delete().eq('id', id);
+    if (err) throw err;
+    setLeads((prev) => prev.filter((l) => l.id !== id));
+  }, []);
+
+  const removeLeads = useCallback(async (ids) => {
+    const { error: err } = await supabase.from('leads').delete().in('id', ids);
+    if (err) throw err;
+    setLeads((prev) => prev.filter((l) => !ids.includes(l.id)));
+  }, []);
+
+  const updateStatus = useCallback(async (ids, status) => {
+    const { error: err } = await supabase.from('leads').update({ status }).in('id', ids);
+    if (err) throw err;
+    setLeads((prev) => prev.map((l) => (ids.includes(l.id) ? { ...l, status } : l)));
+  }, []);
+
+  // `cnpjData` is the object returned by lib/cnpj.js's fetchCnpjData().
+  const updateCnpj = useCallback(async (id, cnpjData) => {
+    const { error: err } = await supabase.from('leads').update(cnpjData).eq('id', id);
+    if (err) throw err;
+    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, ...cnpjData } : l)));
+  }, []);
+
+  const updateNotes = useCallback(async (id, notas) => {
+    const { error: err } = await supabase.from('leads').update({ notas }).eq('id', id);
+    if (err) throw err;
+    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, notas } : l)));
+  }, []);
+
+  return { leads, loading, error, removeLead, removeLeads, updateStatus, updateCnpj, updateNotes };
 }

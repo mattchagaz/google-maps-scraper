@@ -99,3 +99,45 @@
   border-color: var(--accent);
   color: #d6cfff;
 }
+
+.waEdit {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.waEdit:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.messageBox {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+}
+
+.messageInput {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+  padding: 8px;
+  resize: vertical;
+  outline: none;
+}
+
+.messageInput:focus {
+  border-color: var(--accent);
+}

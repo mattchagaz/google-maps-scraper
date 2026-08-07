@@ -12,13 +12,13 @@ const seedCollections = [
 ];
 
 const seedLeads = [
-  { id: 'l1', collection_id: 'c1', nome: 'Pizzaria do João', website: 'https://pizzariadojoao.com.br', agendamento: 'Sem info', cardapio: 'https://ifood.com.br/pizzariadojoao', redes: 'https://instagram.com/pizzariadojoao', telefone: '(11) 99999-0000', email: 'Sem info', endereco: 'Rua das Flores, 123 - São Paulo, SP', created_at: hoursAgo(1) },
-  { id: 'l2', collection_id: 'c1', nome: 'Studio Beleza Ana Clara', website: 'Sem info', agendamento: 'https://calendly.com/anaclara', cardapio: 'Sem info', redes: 'https://instagram.com/anaclarastudio', telefone: '(11) 98888-1111', email: 'Sem info', endereco: 'Av. Paulista, 900 - São Paulo, SP', created_at: hoursAgo(1) },
-  { id: 'l3', collection_id: 'c1', nome: 'Oficina Mecânica Silva', website: 'Sem info', agendamento: 'Sem info', cardapio: 'Sem info', redes: 'Sem info', telefone: 'Sem info', email: 'contato@oficinasilva.com', endereco: 'Rua Industrial, 45 - Guarulhos, SP', created_at: hoursAgo(1) },
-  { id: 'l4', collection_id: 'c1', nome: 'Café Central', website: 'https://cafecentral.com.br', agendamento: 'Sem info', cardapio: 'https://cafecentral.com.br/cardapio', redes: 'https://instagram.com/cafecentral', telefone: '(11) 97777-2222', email: 'Sem info', endereco: 'Rua Augusta, 500 - São Paulo, SP', created_at: hoursAgo(1) },
-  { id: 'l5', collection_id: 'c2', nome: 'Barbearia Vintage', website: 'Sem info', agendamento: 'https://booksy.com/barbeariavintage', cardapio: 'Sem info', redes: 'https://instagram.com/barbeariavintage', telefone: '(11) 96666-3333', email: 'Sem info', endereco: 'Rua Oscar Freire, 210 - São Paulo, SP', created_at: hoursAgo(30) },
-  { id: 'l6', collection_id: 'c2', nome: 'Academia Fit Power', website: 'https://fitpower.com.br', agendamento: 'Sem info', cardapio: 'Sem info', redes: 'Sem info', telefone: 'Sem info', email: 'Sem info', endereco: 'Av. Rebouças, 1200 - São Paulo, SP', created_at: hoursAgo(30) },
-  { id: 'l7', collection_id: 'c2', nome: 'Clínica Odontológica Sorriso', website: 'Sem info', agendamento: 'Sem info', cardapio: 'Sem info', redes: 'https://instagram.com/clinicasorriso', telefone: '(11) 95555-4444', email: 'contato@clinicasorriso.com', endereco: 'Rua Haddock Lobo, 300 - São Paulo, SP', created_at: hoursAgo(30) },
+  { id: 'l1', collection_id: 'c1', nome: 'Pizzaria do João', website: 'https://pizzariadojoao.com.br', agendamento: 'Sem info', cardapio: 'https://ifood.com.br/pizzariadojoao', redes: 'https://instagram.com/pizzariadojoao', whatsapp: 'Sem info', telefone: '(11) 99999-0000', email: 'Sem info', endereco: 'Rua das Flores, 123 - São Paulo, SP', categoria: 'Pizzaria', status: 'novo', cnpj: '11222333000181', razao_social: 'PIZZARIA DO JOAO LTDA', situacao_cadastral: 'ATIVA', data_abertura: '2015-03-12', porte: 'MICRO EMPRESA', avaliacao: 4.5, num_avaliacoes: 234, notas: null, created_at: hoursAgo(1) },
+  { id: 'l2', collection_id: 'c1', nome: 'Studio Beleza Ana Clara', website: 'Sem info', agendamento: 'https://calendly.com/anaclara', cardapio: 'Sem info', redes: 'Sem info', whatsapp: 'https://wa.me/5511988881111', telefone: '(11) 98888-1111', email: 'Sem info', endereco: 'Av. Paulista, 900 - São Paulo, SP', categoria: 'Salão de beleza', status: 'contatado', avaliacao: 4.9, num_avaliacoes: 58, notas: 'Ligou terça, disse que ia pensar. Retomar sexta.', created_at: hoursAgo(1) },
+  { id: 'l3', collection_id: 'c1', nome: 'Oficina Mecânica Silva', website: 'Sem info', agendamento: 'Sem info', cardapio: 'Sem info', redes: 'Sem info', whatsapp: 'Sem info', telefone: 'Sem info', email: 'contato@oficinasilva.com', endereco: 'Rua Industrial, 45 - Guarulhos, SP', categoria: 'Oficina mecânica', status: 'novo', avaliacao: 3.2, num_avaliacoes: 12, notas: null, created_at: hoursAgo(1) },
+  { id: 'l4', collection_id: 'c1', nome: 'Café Central', website: 'https://cafecentral.com.br', agendamento: 'Sem info', cardapio: 'https://cafecentral.com.br/cardapio', redes: 'https://instagram.com/cafecentral', whatsapp: 'https://api.whatsapp.com/send?phone=5511977772222', telefone: '(11) 97777-2222', email: 'Sem info', endereco: 'Rua Augusta, 500 - São Paulo, SP', categoria: 'Cafeteria', status: 'respondeu', avaliacao: null, num_avaliacoes: null, notas: null, created_at: hoursAgo(1) },
+  { id: 'l5', collection_id: 'c2', nome: 'Barbearia Vintage', website: 'Sem info', agendamento: 'https://booksy.com/barbeariavintage', cardapio: 'Sem info', redes: 'https://instagram.com/barbeariavintage', whatsapp: 'Sem info', telefone: '(11) 96666-3333', email: 'Sem info', endereco: 'Rua Oscar Freire, 210 - São Paulo, SP', categoria: 'Barbearia', status: 'novo', avaliacao: 4.7, num_avaliacoes: 1200, notas: null, created_at: hoursAgo(30) },
+  { id: 'l6', collection_id: 'c2', nome: 'Academia Fit Power', website: 'https://fitpower.com.br', agendamento: 'Sem info', cardapio: 'Sem info', redes: 'Sem info', whatsapp: 'Sem info', telefone: 'Sem info', email: 'Sem info', endereco: 'Av. Rebouças, 1200 - São Paulo, SP', categoria: 'Academia', status: 'fechado', avaliacao: 4.1, num_avaliacoes: 340, notas: 'Fechado! Site entregue em 08/08.', created_at: hoursAgo(30) },
+  { id: 'l7', collection_id: 'c2', nome: 'Clínica Odontológica Sorriso', website: 'Sem info', agendamento: 'Sem info', cardapio: 'Sem info', redes: 'https://instagram.com/clinicasorriso', whatsapp: 'https://wa.me/5511955554444', telefone: '(11) 95555-4444', email: 'contato@clinicasorriso.com', endereco: 'Rua Haddock Lobo, 300 - São Paulo, SP', categoria: 'Clínica odontológica', status: 'sem_interesse', avaliacao: 4.8, num_avaliacoes: 89, notas: null, created_at: hoursAgo(30) },
 ];
 
 const fakeUser = { id: 'u1', email: 'matheus@digilivro.com.br' };
@@ -30,21 +30,25 @@ function tableData(table) {
 class MockQuery {
   constructor(table, mode) {
     this.table = table;
-    this.mode = mode; // 'select' | 'delete' | 'insert'
+    this.mode = mode; // 'select' | 'delete' | 'insert' | 'update'
     this.filters = [];
   }
   select() { return this; }
   order() { return this; }
-  eq(col, val) { this.filters.push([col, val]); return this; }
+  eq(col, val) { this.filters.push(['eq', col, val]); return this; }
+  in(col, vals) { this.filters.push(['in', col, vals]); return this; }
   insert() { return this; }
+  update() { return this; }
   single() { return this; }
   _rows() {
     let rows = tableData(this.table);
-    for (const [col, val] of this.filters) rows = rows.filter((r) => r[col] === val);
+    for (const [op, col, val] of this.filters) {
+      rows = op === 'in' ? rows.filter((r) => val.includes(r[col])) : rows.filter((r) => r[col] === val);
+    }
     return rows;
   }
   then(resolve) {
-    if (this.mode === 'delete') return Promise.resolve({ error: null }).then(resolve);
+    if (this.mode === 'delete' || this.mode === 'update') return Promise.resolve({ error: null }).then(resolve);
     return Promise.resolve({ data: this._rows(), error: null }).then(resolve);
   }
 }
@@ -63,6 +67,7 @@ export function createClient() {
         select: () => new MockQuery(table, 'select'),
         delete: () => new MockQuery(table, 'delete'),
         insert: () => new MockQuery(table, 'insert'),
+        update: () => new MockQuery(table, 'update'),
       };
     },
   };
