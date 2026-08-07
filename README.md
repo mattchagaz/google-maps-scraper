@@ -13,40 +13,6 @@ são scripts injetados pelo Chrome, não faz sentido usar React neles.
 
 ---
 
-## 📦 Estrutura de Arquivos
-
-```
-google-maps-scraper/
-├── manifest.json           # Configuração da extensão (Manifest V3)
-├── content.js               # Script de scraping (roda dentro do Maps)
-├── background.js            # Service Worker (MV3) — extrai dados de cada empresa
-├── src/popup/                # Código-fonte do popup (React)
-│   ├── popup.html
-│   ├── main.jsx
-│   ├── App.jsx
-│   ├── components/           # Header, filtros, lista de resultados, AuthBar...
-│   ├── hooks/                 # useScraper (coleta), useAuth + useCloudSync (Supabase)
-│   ├── lib/                   # chromeApi, filtros, whatsapp, exportação .xls, cloudSync
-│   └── styles/global.css     # Design tokens (cores, radius, fontes)
-├── dist/                     # Build gerado pelo Vite (dist/popup.html é o popup real)
-├── web/                      # Dashboard web (React + Vite, deploy separado — ver DEPLOY.md)
-│   ├── src/
-│   │   ├── pages/              # Login, Dashboard
-│   │   ├── components/         # CollectionList, LeadsTable, LeadModal, Toolbar,
-│   │   │                       # BulkActionBar, StatusPill, TopBar
-│   │   └── lib/                # filtros, whatsapp, status, xlsExport, supabase
-│   │       └── cnpj.js          # busca CNPJ na BrasilAPI — pronto no código, sem UI hoje
-├── supabase/
-│   ├── schema.sql            # Schema completo (tabelas + RLS) — projetos novos
-│   └── migrations/           # Migrações incrementais — projetos já existentes
-├── DEPLOY.md                 # Passo a passo pra ligar extensão + dashboard + Supabase
-├── legacy/                   # Versão antiga (popup.html/js/css em HTML puro), referência
-├── icons/
-└── README.md
-```
-
----
-
 ## 🛠️ Build do popup (necessário antes de carregar a extensão)
 
 ```bash
