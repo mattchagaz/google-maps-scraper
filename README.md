@@ -64,8 +64,6 @@ sincronizada automaticamente pro banco assim que termina.
 | Website       | URL do site oficial                                   |
 | WhatsApp      | Link de WhatsApp (`wa.me`/`api.whatsapp.com`), separado do resto das redes |
 | Redes Sociais | Instagram, Facebook, etc. (WhatsApp não entra aqui)   |
-| Agendamento¹  | Link de agendamento/bio (Calendly, Linktree, etc.)    |
-| Cardápio¹     | Link de cardápio/delivery (iFood, menu do site...)    |
 | Telefone      | Número de telefone                                    |
 | Email         | E-mail (se disponível no Maps)                        |
 | Endereço      | Endereço completo                                     |
@@ -117,12 +115,10 @@ O dashboard web (`web/`, publicável na Vercel) traz:
 - **Seleção em massa** — marca várias linhas e aplica status, excluir ou exportar de
   uma vez, com barra de ações dedicada.
 - **Exportação `.xls` própria**, com Nome, Website, WhatsApp, Redes Sociais, Telefone,
-  Email e Endereço (Agendamento e Cardápio não aparecem no dashboard nem na planilha —
-  ficam só no `.xls` bruto que a extensão coleta, sem uso hoje).
+  Email e Endereço.
 
 Acesso de qualquer navegador/dispositivo, protegido por Row Level Security no banco
-(cada conta só vê os próprios dados). Passo a passo completo de configuração em
-[DEPLOY.md](DEPLOY.md).
+(cada conta só vê os próprios dados).
 
 ---
 
@@ -161,10 +157,6 @@ Planilha HTML compatível com Excel.
 
 ### A coleta para sozinha
 - O Google pode ter detectado atividade automatizada. Aumente o delay para 2000ms+.
-
-### Dados faltando (muitos "Sem info")
-- O Google atualiza frequentemente o DOM do Maps. Os seletores CSS no `content.js`/`background.js`
-  (incluindo os de categoria e avaliação) podem precisar de atualização.
 
 ### Uma ação no dashboard falhou (excluir, renomear, mudar status...)
 - Aparece um toast vermelho no canto da tela com o motivo — geralmente é sessão
