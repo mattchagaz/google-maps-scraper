@@ -64,8 +64,8 @@ sincronizada automaticamente pro banco assim que termina.
 | Website       | URL do site oficial                                   |
 | WhatsApp      | Link de WhatsApp (`wa.me`/`api.whatsapp.com`), separado do resto das redes |
 | Redes Sociais | Instagram, Facebook, etc. (WhatsApp não entra aqui)   |
-| Agendamento   | Link de agendamento/bio (Calendly, Linktree, etc.)    |
-| Cardápio      | Link de cardápio/delivery (iFood, menu do site...)    |
+| Agendamento¹  | Link de agendamento/bio (Calendly, Linktree, etc.)    |
+| Cardápio¹     | Link de cardápio/delivery (iFood, menu do site...)    |
 | Telefone      | Número de telefone                                    |
 | Email         | E-mail (se disponível no Maps)                        |
 | Endereço      | Endereço completo                                     |
@@ -74,6 +74,8 @@ sincronizada automaticamente pro banco assim que termina.
 | Nº de avaliações | Quantidade de avaliações no Google                 |
 
 > **Nota:** Campos não disponíveis são preenchidos com `"Sem info"`.
+> ¹ Coletados mas não exibidos em lugar nenhum da interface hoje (nem popup, nem
+> dashboard) — ficam salvos, só sem uso na UI atual.
 
 ---
 
@@ -114,8 +116,9 @@ O dashboard web (`web/`, publicável na Vercel) traz:
   padrão configurável (editável em "💬 Mensagem" no topo da tabela).
 - **Seleção em massa** — marca várias linhas e aplica status, excluir ou exportar de
   uma vez, com barra de ações dedicada.
-- **Exportação `.xls` própria**, com todos os campos coletados (inclusive
-  Agendamento/Cardápio/Email, que não vão na planilha rápida do popup).
+- **Exportação `.xls` própria**, com Nome, Website, WhatsApp, Redes Sociais, Telefone,
+  Email e Endereço (Agendamento e Cardápio não aparecem no dashboard nem na planilha —
+  ficam só no `.xls` bruto que a extensão coleta, sem uso hoje).
 
 Acesso de qualquer navegador/dispositivo, protegido por Row Level Security no banco
 (cada conta só vê os próprios dados). Passo a passo completo de configuração em
@@ -140,8 +143,8 @@ Planilha HTML compatível com Excel.
 
 - **Popup**: colunas Nome, Website, WhatsApp, Redes Sociais, Telefone e Endereço
   (versão enxuta, pra exportação rápida).
-- **Dashboard**: colunas Nome, Website, WhatsApp, Agendamento, Cardápio, Redes
-  Sociais, Telefone, Email e Endereço (versão completa).
+- **Dashboard**: colunas Nome, Website, WhatsApp, Redes Sociais, Telefone, Email
+  e Endereço.
 - **Codificação:** UTF-8 com BOM
 - Células sem dado aparecem como `Sem info`
 - Links viram hyperlinks clicáveis na planilha

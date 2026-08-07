@@ -10,8 +10,6 @@ const FIELDS = [
   { key: 'website', label: 'Website', link: true },
   { key: 'redes', label: 'Redes Sociais', link: true },
   { key: 'email', label: 'Email' },
-  { key: 'agendamento', label: 'Agendamento', link: true },
-  { key: 'cardapio', label: 'Cardápio', link: true },
   { key: 'endereco', label: 'Endereço' },
 ];
 

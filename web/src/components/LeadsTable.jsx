@@ -12,8 +12,6 @@ const COLUMNS = [
   { key: 'telefone', label: 'Telefone', copyable: true },
   { key: 'email', label: 'Email' },
   { key: 'categoria', label: 'Categoria' },
-  { key: 'agendamento', label: 'Agendamento', link: true },
-  { key: 'cardapio', label: 'Cardápio', link: true },
   { key: 'endereco', label: 'Endereço' },
 ];
 

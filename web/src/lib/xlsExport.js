@@ -1,10 +1,10 @@
 // Builds an Excel-compatible .xls (HTML table) file and triggers a browser
-// download. Same format the extension produces, but with the full column
-// set (Agendamento/Cardápio/Email included) since the dashboard has room.
+// download. Same format the extension produces, but with a couple extra
+// columns (Email) since the dashboard has room.
 
-const HEADERS = ['Nome', 'Website', 'WhatsApp', 'Agendamento', 'Cardápio', 'Redes Sociais', 'Telefone', 'Email', 'Endereço'];
-const FIELDS = ['nome', 'website', 'whatsapp', 'agendamento', 'cardapio', 'redes', 'telefone', 'email', 'endereco'];
-const COL_WIDTHS = [170, 140, 140, 140, 140, 140, 110, 140, 210];
+const HEADERS = ['Nome', 'Website', 'WhatsApp', 'Redes Sociais', 'Telefone', 'Email', 'Endereço'];
+const FIELDS = ['nome', 'website', 'whatsapp', 'redes', 'telefone', 'email', 'endereco'];
+const COL_WIDTHS = [170, 140, 140, 140, 110, 140, 210];
 
 function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -12,7 +12,7 @@ function esc(s) {
 
 function makeCell(val, field) {
   const isSem = !val || val === 'Sem info';
-  const isLink = ['website', 'whatsapp', 'agendamento', 'cardapio', 'redes'].includes(field);
+  const isLink = ['website', 'whatsapp', 'redes'].includes(field);
   const cls = isSem ? 'sem' : field === 'website' ? 'web' : field === 'telefone' ? 'tel' : isLink ? 'web' : '';
   const safe = esc(val || 'Sem info');
   const inner = !isSem && isLink ? `<a href="${safe}" style="color:#1D4ED8">${safe}</a>` : safe;
