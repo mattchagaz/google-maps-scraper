@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { useCollections } from '../hooks/useCollections.js';
 import { useLeads } from '../hooks/useLeads.js';
 import { useMessageTemplate } from '../hooks/useMessageTemplate.js';
-import { applyFilters } from '../lib/filters.js';
+import { applyFilters, toggleFieldFilter } from '../lib/filters.js';
 import { downloadXLS } from '../lib/xlsExport.js';
 import TopBar from '../components/TopBar.jsx';
 import CollectionList from '../components/CollectionList.jsx';
@@ -38,8 +38,7 @@ export default function Dashboard({ auth }) {
   // Trocar de coleta invalida qualquer seleção da tabela anterior.
   useEffect(() => setSelectedIds(new Set()), [selectedId]);
 
-  const toggleFilter = (key) =>
-    setActiveKeys((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  const toggleFilter = (key) => setActiveKeys((prev) => toggleFieldFilter(prev, key));
 
   const filtered = useMemo(() => {
     const byFields = applyFilters(leads, activeKeys, search);

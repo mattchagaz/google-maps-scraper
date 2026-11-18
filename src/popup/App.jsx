@@ -11,7 +11,7 @@ import Footer from './components/Footer.jsx';
 import { useScraper } from './hooks/useScraper.js';
 import { useAuth } from './hooks/useAuth.js';
 import { useCloudSync } from './hooks/useCloudSync.js';
-import { applyFilters } from './lib/filters.js';
+import { applyFilters, toggleFieldFilter } from './lib/filters.js';
 import { downloadXLS } from './lib/xlsExport.js';
 import styles from './App.module.css';
 
@@ -25,8 +25,7 @@ export default function App() {
   const [activeKeys, setActiveKeys] = useState([]);
   const [search, setSearch] = useState('');
 
-  const toggleFilter = (key) =>
-    setActiveKeys((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  const toggleFilter = (key) => setActiveKeys((prev) => toggleFieldFilter(prev, key));
 
   // What "Baixar Excel" actually exports — respects active filters,
   // so "só quem não tem website" pode ser exportado direto.
